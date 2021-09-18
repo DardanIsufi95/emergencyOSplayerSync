@@ -47,8 +47,8 @@ function init(){
                     const sql = `SELECT 
                         ${tableinfo['uniquePlayer']} as id, 
                         ${tableinfo['fullnamePlayer']} as playername, 
-                        ${tableinfo['telephonePlayer'] || "''"} as telephonePlayer 
-                        ${tableinfo['birthday'] || "''"} as birthday 
+                        ${tableinfo['telephonePlayer'] || "''"} as telephonePlayer ,
+                        ${tableinfo['birthday'] || "''"} as birthday ,
                         ${tableinfo['sex'] || "''"} as sex 
                     FROM ${tableinfo['table']}`
     
