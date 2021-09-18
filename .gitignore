@@ -1,0 +1,13 @@
+node_modules
+errors
+inprocess
+import
+processed
+queue
+queueerror
+queuesave
+failed
+icebreaker
+
+*.log
+
