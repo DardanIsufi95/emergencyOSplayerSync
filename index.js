@@ -5,32 +5,6 @@ const request = require("node-fetch")
 
 const fs = require('fs')
 
-const connectionDB = mysql.createConnection({
-    host: 'sd447418-004.dbaas.ovh.net',
-    port: 35319,
-    user: 'ancomoulivesync',
-    password: 'EmergencyOSDbsEcll1',
-    database: 'ancomoulivesync',
-});
-
-
-const pool = mysql.createPool({
-    host: 'sd447418-004.dbaas.ovh.net',
-    port: 35319,
-    user: 'ancomouemergency',
-    password: 'EmergencyOSDbsE1',
-    database: 'ancomouemergency',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-});
-
-// const db = mysql.createConnection({
-//     host: 'ancomouemergency.mysql.db',
-//     user: 'ancomouemergency',
-//     password: 'EmergencyOSDbsEc1',
-//     database: 'ancomouemergency'
-// });
 function init(){
     let output = []
     request("https://emergencyos.de/.cron/sync_conn.php").then(response=>response.text()).then(async res=>{
