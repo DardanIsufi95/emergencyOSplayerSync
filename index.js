@@ -61,7 +61,7 @@ function init(){
                             SQL:sql
                         }
 
-                        console.log(out)
+                        //console.log(out)
                         dbdata.push(out)
                     }
                 })
@@ -80,14 +80,14 @@ function init(){
 
 
         Promise.allSettled(promises).then((result) => {
-            fs.writeFileSync('data.json', JSON.stringify(dbdata), 'utf8')
+            //fs.writeFileSync('data.json', JSON.stringify(dbdata), 'utf8')
             request("https://emergencyos.de/.cron/sync_save.php",{
                 headers: {'Content-Type': 'application/json'},
                 method:"POST",
                 body: JSON.stringify(dbdata)
             }).then(response=> response.text()).then(data=>{
                 // console.log(data)
-                fs.writeFileSync('rueckgabe.json', JSON.stringify(data), 'utf8')
+                //fs.writeFileSync('rueckgabe.json', JSON.stringify(data), 'utf8')
             })
 
         })
