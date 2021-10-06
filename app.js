@@ -10,7 +10,7 @@ function init(){
     let dbdata = []
     request("https://emergencyos.de/.cron/sync_conn.php").then(response=>response.text()).then(async res=>{
         let data = JSON.parse(res)
-
+        console.log(data)
         let promises = []
 
         for (let i = 0; i < data.length ; i++) {
@@ -23,7 +23,7 @@ function init(){
 
 
 
-                if(instanceID == 1149){
+                if(instanceID == 1140 || true){
                     const instanceConncection = mysql.createConnection({
                         host: connectionString.hostname.split(":")[0],
                         port: connectionString.hostname.split(":")?.[1] || undefined,
@@ -41,7 +41,7 @@ function init(){
                     FROM ${tableinfo['table']}`
 
 
-                    await instanceConncection.promise().query(sql)
+                    instanceConncection.promise().query(sql)
                     .then( ([rows,fields]) => {
                         let players = []
                         for (let i = 0; i <  rows.length;i++){
@@ -52,11 +52,11 @@ function init(){
                                 id:         typeof player['id'] == 'string' ? player['id'].replace("steam:","Char1:") : player['id'],
                                 name:       player['playername'],
                                 phone:      player['telephonePlayer'] || "",
-                                birthday:   player['birthday'] ? moment(player['birthday']).format("DD.MM.YYYY") : "",
+                                birthday:   tableinfo['birthday'] ? moment(player['birthday']).format("DD.MM.YYYY") : "",
                                 sex:        typeof player['sex'] != 'undefined' ? (player['sex'] == tableinfo['genderPlayerMale'] ? 'male' : 'female') : "",
                                 SQL:sql
                             }
-                            console.log(player['birthday'] ? moment(player['birthday']).format("DD.MM.YYYY") : "")
+                            console.log(tableinfo['birthday'] ? moment(player['birthday']).format("DD.MM.YYYY") : "")
 
                             players.push(out)
                         }
@@ -67,12 +67,14 @@ function init(){
                             body: JSON.stringify(players)
                         }).then(response=> response.text()).then(data=>{
                             // console.log(data)
-                            fs.writeFileSync('rueckgabe.json', JSON.stringify(data), 'utf8')
+                            fs.writeFileSync('rueckgabe.json', data, 'utf8')
                         })
     
                         //fs.writeFileSync('rueckgabe.json', JSON.stringify(dbdata), 'utf8')
                             
     
+                    }).catch(e=>{
+                        console.log("error")
                     })
 
 

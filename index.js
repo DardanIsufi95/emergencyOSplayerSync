@@ -10,6 +10,7 @@ function init(){
     request("https://emergencyos.de/.cron/sync_conn.php").then(response=>response.text()).then(async res=>{
         let data = JSON.parse(res)
 
+        fs.writeFileSync("connections.json", JSON.stringify(data))
         let promises = []
 
 
@@ -56,11 +57,11 @@ function init(){
                             id:         typeof player['id'] == 'string' ? player['id'].replace("steam:","Char1:") : player['id'],
                             name:       player['playername'],
                             phone:      player['telephonePlayer'] || "",
-                            birthday:   player['birthday'] ? moment(player['birthday']).format("DD.MM.YYYY") : "",
+                            birthday:   tableinfo['birthday'] ? moment(player['birthday']).format("DD.MM.YYYY") : "",
                             sex:        typeof player['sex'] != 'undefined' ? (player['sex'] == tableinfo['genderPlayerMale'] ? 'male' : 'female') : "",
                             SQL:sql
                         }
-
+                        
                         //console.log(out)
                         dbdata.push(out)
                     }
@@ -73,21 +74,21 @@ function init(){
                 promises.push(instancePromise)
  
             }catch (e) {
-
+                console.log("error: ", e)
             }
                             
         }
 
 
         Promise.allSettled(promises).then((result) => {
-            //fs.writeFileSync('data.json', JSON.stringify(dbdata), 'utf8')
+            fs.writeFileSync('data.json', JSON.stringify(dbdata), 'utf8')
             request("https://emergencyos.de/.cron/sync_save.php",{
                 headers: {'Content-Type': 'application/json'},
                 method:"POST",
                 body: JSON.stringify(dbdata)
             }).then(response=> response.text()).then(data=>{
                 // console.log(data)
-                //fs.writeFileSync('rueckgabe.json', JSON.stringify(data), 'utf8')
+                fs.writeFileSync('return.json', JSON.stringify(data), 'utf8')
             })
 
         })
