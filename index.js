@@ -65,6 +65,10 @@ function init(){
                         //console.log(out)
                         dbdata.push(out)
                     }
+                    instanceConncection.close()
+                }).catch(err => {
+                    instanceConncection.close()
+                    console.log("connection error")
                 })
 
 
